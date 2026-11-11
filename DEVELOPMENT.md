@@ -1,33 +1,38 @@
-# Sviluppo del sito RoundX
+# RoundX — React hero proposal
 
-Struttura statica ispirata all'organizzazione di Zetamannaro/particula-website.
-Questa è una base tecnica, non il design definitivo.
+React + TypeScript + Vite. Development branch: `design/roundx-home`.
 
-## Branch
-- `main`: branch principale; per ora contiene soltanto il README iniziale.
-- `design/roundx-home`: sviluppo del nuovo sito.
-- Le revisioni possono essere proposte a main tramite pull request.
-- Due branch non equivalgono a due ambienti web pubblicati: l'hosting di test e produzione va configurato separatamente.
+## Run
 
-## File
-- `index.html`: struttura e contenuti della pagina.
-- `styles.css`: stile e layout.
-- `script.js`: interazioni.
-- `background.js`: eventuali effetti di sfondo.
-- `assets/`: immagini, loghi e altre risorse.
-- `.nojekyll`: consente di servire i file statici senza Jekyll su GitHub Pages.
+Requires Node.js 22.12+ (or a current supported LTS).
 
-## Anteprima locale
-Dalla cartella del repository, con Python 3 installato:
 ```sh
-python3 -m http.server 8000
+npm ci
+npm run dev
 ```
-Aprire http://localhost:8000.
 
-## Pubblicazione
-Nessun dominio personalizzato è configurato in questo branch.
-Il file CNAME di Particula non è stato copiato.
-Hosting e DNS del sito attuale sono indipendenti da questa struttura.
-La pagina iniziale contiene noindex,nofollow per la fase di sviluppo:
-rimuoverlo nella versione destinata alla produzione.
-Non caricare password, chiavi API o dati riservati.
+## Build
+
+```sh
+npm run build
+npm run preview
+```
+
+Build runs TypeScript checks and emits the static site into `dist/`.
+Vite uses relative asset paths so the output works on a repository subpath or a custom domain.
+Deploy `dist/`, not the raw React sources. For GitHub Pages use a build/deploy Actions workflow after choosing the preview/live setup.
+No deployment, domain, or DNS changes are part of this proposal. Two branches alone do not create separate hosted environments.
+
+## Hero concept
+
+Charcoal background, warm copper Threads, large editorial typography.
+The original H1 and H2 are preserved, highlighting obvious, crowd, and micro venture.
+Additional short labels are proposed copy, subject to review. The typographic wordmark is provisional.
+Threads is the actual React Bits TypeScript/CSS component; see THIRD_PARTY_NOTICES.md and licenses/react-bits-LICENSE.md.
+It pauses offscreen and in background tabs, respects reduced motion at initialization, and has a visible pause control.
+Without WebGL2 the text and CSS background remain usable.
+Fonts are loaded from Google Fonts with local sans-serif fallbacks.
+
+## Before production
+
+Remove the development `noindex, nofollow` directive, confirm the final brand/logo and copy, add the remaining site sections and legal pages, and configure the chosen hosting environment.
