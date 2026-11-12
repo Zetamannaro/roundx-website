@@ -62,3 +62,16 @@ html{scroll-padding-top:135px}
 .gallery-shell{height:620px;background:transparent}
 .portfolio-section{background:transparent}
 @media(max-width:760px){.gallery-shell{height:470px}}
+
+/* Shared title scale and visible title-to-content spacing for both sections. */
+:root{--display-title-size:clamp(62.1px,9.43vw,151.8px);--section-heading-gap:56px;--gallery-canvas-height:620px;--gallery-top-crop:177.1px}
+.hero h1,#stats-title,#portfolio-title{font-size:var(--display-title-size);line-height:1.13;letter-spacing:-.068em}
+.stats>.section-heading{max-width:none;display:flow-root;margin-bottom:var(--section-heading-gap)}
+.portfolio-section>.section-heading{display:flow-root;margin-bottom:calc(var(--section-heading-gap) - 12px)}
+#stats-title,#portfolio-title{margin:0;font-weight:500}
+/* Circular Gallery places its central image at 30.5% of its canvas height.
+   Crop that empty canvas area, retaining 12px for hover lift, without resizing cards. */
+.gallery-shell{height:calc(var(--gallery-canvas-height) - var(--gallery-top-crop));overflow:hidden}
+.gallery-shell>.circular-gallery{position:absolute;top:calc(0px - var(--gallery-top-crop));height:var(--gallery-canvas-height);width:100%}
+.gallery-shell>.fallback-gallery{align-items:flex-start;padding-top:12px}
+@media(max-width:760px){:root{--display-title-size:clamp(63.25px,14.375vw,89.7px);--section-heading-gap:35px;--gallery-canvas-height:470px;--gallery-top-crop:131.35px}}

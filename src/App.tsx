@@ -62,8 +62,7 @@ export default function App() {
         </section>
 
         <section className="stats section" id="stats" aria-labelledby="stats-title">
-          <div className="section-heading"><h2 id="stats-title">Different worlds.<br /><span>Connected by possibility.</span></h2>
-          <p className="demo-note">Preview: illustrative countries, industries and startups. Figures below are not verified RoundX portfolio data.</p></div>
+          <div className="section-heading"><h2 id="stats-title">Some Stats</h2></div>
           <div className="stats-grid">
             <article className="stat-card geography-card">
               <div className="stat-top"><h3>geographies</h3><span>{number(countryCounts.length)}</span></div>
