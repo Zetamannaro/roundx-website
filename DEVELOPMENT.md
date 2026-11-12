@@ -1,38 +1,33 @@
-# RoundX — React hero proposal
+# RoundX — one-page preview
+React + TypeScript + Vite. Development branch: design/roundx-home.
+Node.js 22.12+ or current supported LTS. Run npm ci, then npm run dev.
+Build: npm run build. Static output: dist/. Base paths are relative for GitHub Pages.
 
-React + TypeScript + Vite. Development branch: `design/roundx-home`.
+## Sections
+Hero, stats, portfolio, contacts and footer, with persistent Acid Squares behind every section.
+Brand colors: blue #00A6FF, coral #FF7D7D, navy #141427, extracted from the supplied Illustrator/PDF logo.
+The supplied logo is exported to SVG, cropped and adapted with white lettering for the dark surface.
+Poppins is bundled locally through @fontsource/poppins; no Google Fonts requests.
 
-## Run
+## Single source of portfolio data
+Edit src/data/portfolio.ts to replace the 25 placeholder positions.
+Every entry has name, country/code, industry and image.
+Country counts, sector distribution and startup count derive from this array.
+The 8 countries and 6 industries are ILLUSTRATIVE, not verified RoundX claims.
+The site visibly discloses the demonstration data.
+Hover, tap or use keyboard arrow keys to explore the native radio groups.
+Circular Gallery supports dragging, horizontal wheel and keyboard navigation.
+Normal vertical scrolling is preserved.
+Eight local landscape placeholder photos are reused across 25 positions until real logos are supplied.
 
-Requires Node.js 22.12+ (or a current supported LTS).
+## Motion and fallbacks
+Acid Squares respects prefers-reduced-motion and the footer Reduce motion checkbox.
+Gallery has no automatic scrolling. Both components stop when offscreen/in background tabs.
+Without WebGL2 a native horizontal card list replaces the WebGL gallery.
+No analytics, forms, databases, localStorage or application cookies are added.
+The private preview host has its own authentication and infrastructure behavior.
+GitHub Pages itself logs visitor IP addresses for security.
 
-```sh
-npm ci
-npm run dev
-```
-
-## Build
-
-```sh
-npm run build
-npm run preview
-```
-
-Build runs TypeScript checks and emits the static site into `dist/`.
-Vite uses relative asset paths so the output works on a repository subpath or a custom domain.
-Deploy `dist/`, not the raw React sources. For GitHub Pages use a build/deploy Actions workflow after choosing the preview/live setup.
-No deployment, domain, or DNS changes are part of this proposal. Two branches alone do not create separate hosted environments.
-
-## Hero concept
-
-Charcoal background, warm copper Threads, large editorial typography.
-The original H1 and H2 are preserved, highlighting obvious, crowd, and micro venture.
-Additional short labels are proposed copy, subject to review. The typographic wordmark is provisional.
-Threads is the actual React Bits TypeScript/CSS component; see THIRD_PARTY_NOTICES.md and licenses/react-bits-LICENSE.md.
-It pauses offscreen and in background tabs, respects reduced motion at initialization, and has a visible pause control.
-Without WebGL2 the text and CSS background remain usable.
-Fonts are loaded from Google Fonts with local sans-serif fallbacks.
-
-## Before production
-
-Remove the development `noindex, nofollow` directive, confirm the final brand/logo and copy, add the remaining site sections and legal pages, and configure the chosen hosting environment.
+## Publication
+Development noindex stays enabled. Review portfolio data, company legal information and privacy notice before production.
+No live-domain/DNS changes are included.
