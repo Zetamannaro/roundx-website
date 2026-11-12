@@ -1,9 +1,9 @@
 # Third-party assets
 ## React Bits
-AcidSquares.tsx/css and CircularGallery.tsx/css by David Haz:
+Grainient.tsx/css, AcidSquares.tsx/css (retained but unused) and CircularGallery.tsx/css by David Haz:
 https://github.com/DavidHDev/react-bits
 Retrieved 2026-11-12. MIT + Commons Clause. Full text: licenses/react-bits-LICENSE.md.
-CircularGallery is adapted to show country/industry captions and preserve vertical page scrolling.
+CircularGallery is adapted for below-image country/industry captions, external website links, accessible anchors and normal vertical scrolling. Grainient uses the original source; angle and flow are driven through props by page scrolling.
 Included in the RoundX website, not distributed as a standalone component library.
 
 ## Poppins

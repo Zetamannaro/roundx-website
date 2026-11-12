@@ -1,9 +1,10 @@
 import { lazy, Suspense, useEffect, useState, type CSSProperties } from 'react';
 import GeoMap from './components/GeoMap';
 import { portfolio, countryCounts, industryCounts } from './data/portfolio';
-import { glowingWaveConfig } from './config/glowing-wave';
+import { grainientAtScroll, grainientPreset } from './config/grainient';
+const Grainient = lazy(() => import('./components/reactbits/Grainient'));
 const CircularGallery = lazy(() => import('./components/reactbits/CircularGallery'));
-const galleryItems = portfolio.map(p => ({ image: p.image, text: p.name, description: `${p.country} · ${p.industry}`, alt: `Placeholder image for ${p.name}` }));
+const galleryItems = portfolio.map(p => ({ image: p.image, text: p.name, description: `${p.country} · ${p.industry}`, alt: `Placeholder image for ${p.name}`, url: p.website }));
 const number = (n: number) => String(n).padStart(2, '0');
 
 export default function App() {
@@ -14,11 +15,22 @@ export default function App() {
   const [reduced, setReduced] = useState(false);
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [backgroundSettings, setBackgroundSettings] = useState({ angle: 55, flow: 0.8 });
   useEffect(() => {
-    const syncHeader = () => setScrolled(window.scrollY > 24);
-    syncHeader();
-    window.addEventListener('scroll', syncHeader, { passive: true });
-    return () => window.removeEventListener('scroll', syncHeader);
+    let frame = 0;
+    const syncScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 24);
+        setBackgroundSettings(grainientAtScroll(window.scrollY, document.documentElement.scrollHeight, window.innerHeight));
+      });
+    };
+    syncScroll();
+    window.addEventListener('scroll', syncScroll, { passive: true });
+    window.addEventListener('resize', syncScroll);
+    const observer = new ResizeObserver(syncScroll);
+    observer.observe(document.body);
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener('scroll', syncScroll); window.removeEventListener('resize', syncScroll); };
   }, []);
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -33,8 +45,11 @@ export default function App() {
   const currentStartup = portfolio[activeStartup];
   return (
     <>
-      {/* Static fallback until the licensed Glowing Wave source can be installed in a private repository. */}
-      <div className="site-background" style={{ backgroundColor: glowingWaveConfig.backgroundColor }} aria-hidden="true" />
+      <div className="site-background" aria-hidden="true"><Suspense fallback={null}>
+        {webgl && <Grainient {...grainientPreset} {...backgroundSettings}
+          speed={reduced ? 0 : grainientPreset.speed} grainAnimated={!reduced}
+          interactive={!reduced} clickSwirl={!reduced} intro={!reduced} />}
+      </Suspense></div>
       <a href="#main" className="skip-link">Skip to content</a>
       <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}><div className="header-inner">
         <a href="#hero" aria-label="RoundX home"><img src="./roundx-logo.svg" className="logo" alt="RoundX" width="178" height="61" /></a>
@@ -43,11 +58,11 @@ export default function App() {
       <main id="main">
         <section className="hero section" id="hero" aria-labelledby="hero-title">
           <h1 id="hero-title"><span>Beyond the <strong>obvious</strong>,</span><span>before the <strong>crowd</strong></span></h1>
-          <h2>A <strong>micro venture</strong> fund born as a startup, investing in startups – we understand the journey because we’re on it too</h2>
+          <h2>A <strong>micro venture</strong> fund born as a startup, investing in startups</h2>
         </section>
 
         <section className="stats section" id="stats" aria-labelledby="stats-title">
-          <div className="section-heading"><p className="eyebrow">01 / PERSPECTIVES</p><h2 id="stats-title">Different worlds.<br /><span>Connected by possibility.</span></h2>
+          <div className="section-heading"><h2 id="stats-title">Different worlds.<br /><span>Connected by possibility.</span></h2>
           <p className="demo-note">Preview: illustrative countries, industries and startups. Figures below are not verified RoundX portfolio data.</p></div>
           <div className="stats-grid">
             <article className="stat-card geography-card">
@@ -77,22 +92,22 @@ export default function App() {
         </section>
 
         <section className="portfolio-section" id="portfolio" aria-labelledby="portfolio-title">
-          <div className="section-heading section"><p className="eyebrow">02 / PORTFOLIO</p><h2 id="portfolio-title">The next wave<br /><span>starts with them.</span></h2>
-            <p className="section-subtitle">Different ideas. Different origins. A shared drive to build.</p></div>
+          <div className="section-heading section"><h2 id="portfolio-title">Portfolio</h2></div>
           <div className="gallery-shell">
             {webgl ? <Suspense fallback={<p className="gallery-loading">Loading portfolio…</p>}><CircularGallery items={galleryItems}
               bend={1.25} textColor="#000000" borderRadius={0.06} font="500 18px Poppins"
               scrollSpeed={1.5} itemSize={0.65} itemAspect={1.25} gap={0.14} wave={0.4}
               fadeEdges={0.035} autoScroll={0} openOnClick={false} intro={!reduced} dpr={1.5}
-              onActiveChange={setGalleryIndex} aria-label="RoundX illustrative portfolio. Drag horizontally or use arrow keys." /></Suspense> :
-              <div className="fallback-gallery">{portfolio.map(p => <article key={p.id}><img src={p.image} alt={`Placeholder for ${p.name}`} loading="lazy" /><h3>{p.name}</h3><p>{p.country} · {p.industry}</p></article>)}</div>}
+              onItemClick={item => { if (item.url) window.open(item.url, '_blank', 'noopener,noreferrer'); }}
+              onActiveChange={setGalleryIndex} aria-label="RoundX illustrative portfolio. Drag horizontally or use arrow keys. Click an image to visit its demo website." /></Suspense> :
+              <div className="fallback-gallery">{portfolio.map(p => <article key={p.id}><a href={p.website} target="_blank" rel="noopener noreferrer" aria-label={`Visit demo website for ${p.name} (opens in a new tab)`}><img src={p.image} alt={`Placeholder for ${p.name}`} loading="lazy" /></a><h3>{p.name}</h3><p>{p.country} · {p.industry}</p></article>)}</div>}
           </div>
           <div className="gallery-meta section"><span>DRAG TO EXPLORE <span aria-hidden="true">↔</span></span><span>{number(galleryIndex + 1)} <i>/ {portfolio.length}</i></span></div>
-          <p className="portfolio-note section">25 placeholder positions · sample imagery, countries and industries to be replaced with confirmed portfolio data.</p>
+          <p className="portfolio-note section">25 placeholder positions · sample imagery, countries and industries. Image links open demo websites in a new tab.</p>
         </section>
 
         <section className="contacts section" id="contacts" aria-labelledby="contacts-title">
-          <p className="eyebrow">03 / CONTACTS</p><h2 id="contacts-title">Contacts<span>.</span></h2>
+          <h2 id="contacts-title">Contacts<span>.</span></h2>
           <div className="contact-rows">
             <p><strong>Office:</strong><span>via Monte Napoleone 21, Milano (Italy) - 20121</span></p>
             <p><strong>E-mail:</strong><a href="mailto:info@roundx.io">info@roundx.io</a></p>

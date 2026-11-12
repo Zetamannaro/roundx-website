@@ -12,6 +12,7 @@ export const portfolio = Array.from({ length: 25 }, (_, i) => ({
   ...geographies[i % geographies.length],
   industry: industries[(i * 5 + Math.floor(i / 8)) % industries.length],
   image: `./images/scene-${(i * 3) % 8 + 1}.jpg`,
+  website: ['https://example.com/', 'https://www.wikipedia.org/', 'https://www.mozilla.org/'][i % 3],
   placeholder: true,
 }));
 export type Startup = typeof portfolio[number];

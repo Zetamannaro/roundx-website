@@ -1,7 +1,9 @@
 @import '@fontsource/poppins/latin-400.css';
+@import '@fontsource/poppins/latin-300.css';
 @import '@fontsource/poppins/latin-500.css';
 @import '@fontsource/poppins/latin-600.css';
 @import '@fontsource/poppins/latin-700.css';
+@import '@fontsource/poppins/latin-800.css';
 :root{font-family:Poppins,sans-serif;color:#fff;background:#141427;font-synthesis:none;font-weight:400;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased;color-scheme:dark;--blue:#00a6ff;--coral:#ff7d7d;--muted:#b9bacf;--line:#b7c8ff25}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:40px}body{margin:0;overflow-x:hidden}a{color:inherit;text-decoration:none}button,input,select{font-family:Poppins,sans-serif}a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--coral);outline-offset:6px}::selection{color:#141427;background:var(--coral)}
 .site-background{position:fixed;inset:0;z-index:-3;background:radial-gradient(ellipse at 25% 25%,#003559,#141427 65%);pointer-events:none}.background-veil{position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(180deg,#14142750,#14142795 80%)}.section{width:min(1320px,90%);margin-inline:auto}.site-header{width:min(1320px,90%);margin:auto;display:flex;align-items:center;justify-content:space-between;height:116px;border-bottom:1px solid var(--line)}.logo{display:block;width:178px;height:auto}.site-header nav{display:flex;gap:36px;font-size:12px;color:#d0d2e2}.site-header nav a:hover{color:var(--coral)}
@@ -47,3 +49,16 @@ html{scroll-padding-top:135px}
 .contact-rows p{background:#ffffffb8;border-color:#00000017;color:#000}.contact-rows a:hover{color:#000;text-decoration:underline}.linkedin-icon{background:#000;color:#fff}
 .site-footer{color:#000}.site-footer img{width:112px;height:auto;object-fit:contain}.skip-link{background:#fff;color:#000}
 @media(max-width:760px){html{scroll-padding-top:105px}.site-header{height:88px}.logo{width:137px}.hero{min-height:calc(100svh - 88px);padding:70px 0 90px}.hero h1{font-size:clamp(63.25px,14.375vw,89.7px);line-height:1.15}.section-heading h2{text-align:center}.stat-top>span{top:6px}.section-subtitle{max-width:95%}}
+
+/* Grainient is fixed to the viewport; its own window pointer listeners remain active. */
+:root{background:#d0b7b2}
+.site-background{background:linear-gradient(55deg,#ffffff,#d0b7b2,#baa29a,#c69370,#c69358)}
+.site-background>.grainient-container{width:100%;height:100%}
+.hero h1{font-weight:300}
+.hero h1 strong,.hero h1>span:last-child strong{font-weight:800}
+.hero h2{font-weight:300}
+.hero h2 strong{font-weight:700}
+.circular-gallery-label{line-height:1.55!important;white-space:pre-line!important;overflow-wrap:break-word}
+.gallery-shell{height:620px;background:transparent}
+.portfolio-section{background:transparent}
+@media(max-width:760px){.gallery-shell{height:470px}}

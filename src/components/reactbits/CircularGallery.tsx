@@ -5,6 +5,7 @@ import './CircularGallery.css';
 
 export type GalleryItem = {
   image: string;
+  url?: string;
   text?: string;
   description?: string;
   alt?: string;
@@ -383,7 +384,7 @@ const CircularGallery = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const labelsRef = useRef<HTMLDivElement>(null);
   const captionRef = useRef<HTMLDivElement>(null);
-  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const buttonsRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const engineRef = useRef<Engine | null>(null);
   const fontRef = useRef(font);
   const [active, setActive] = useState(0);
@@ -750,16 +751,19 @@ const CircularGallery = ({
             entry.font = font;
             entry.el.style.font = font;
           }
-          const size = card.labelSize;
-          const offset = card.h / 2 + size * 1.1;
+          const size = clamp(card.labelSize, 12, 18);
+          // Anchor the TOP of the complete multiline caption BELOW the image edge.
+          const offset = card.h / 2 + 18;
           const x = card.x + Math.sin(card.angle) * offset;
           const y = card.y - Math.cos(card.angle) * offset;
           const cssX = view.width / 2 + x;
           const cssY = view.height / 2 - y;
           const edge = fade(cssX / view.width) * fade(1 - cssX / view.width);
           entry.el.style.fontSize = `${size}px`;
+          entry.el.style.width = `${card.w}px`;
           entry.el.style.color = s.textColor;
-          entry.el.style.transform = `translate(${cssX}px, ${cssY}px) translate(-50%, -50%) rotate(${-card.angle}rad)`;
+          entry.el.style.transformOrigin = '50% 0';
+          entry.el.style.transform = `translate(${cssX}px, ${cssY}px) translate(-50%, 0) rotate(${-card.angle}rad)`;
           entry.el.style.opacity = String(card.alpha * card.labelAlpha * mix(edge, 1, card.focus));
         });
       }
@@ -1219,19 +1223,21 @@ const CircularGallery = ({
       <ul className={CLASSES.hidden} data-gallery-list="">
         {list.map((item, index) => (
           <li key={`${item.image}-${index}`}>
-            <button
-              type="button"
+            <a
+              href={item.url || '#'}
+              target={item.url ? '_blank' : undefined}
+              rel={item.url ? 'noopener noreferrer' : undefined}
               ref={el => {
                 buttonsRef.current[index] = el;
               }}
               tabIndex={index === active ? 0 : -1}
-              aria-label={`${item.text || item.alt || 'Image'}, ${item.description || ''}, ${index + 1} of ${count}`}
+              aria-label={`${item.text || item.alt || 'Image'}, ${item.description || ''}, ${index + 1} of ${count}${item.url ? ', opens demo website in a new tab' : ''}`}
               aria-current={index === active ? 'true' : undefined}
               onFocus={() => engineRef.current?.focus(index)}
-              onClick={() => engineRef.current?.open(index)}
+              onClick={event => { if (!item.url) { event.preventDefault(); engineRef.current?.open(index); } }}
             >
               {item.text || item.alt || `Image ${index + 1}`}
-            </button>
+            </a>
           </li>
         ))}
       </ul>
