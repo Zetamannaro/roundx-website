@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState, type CSSProperties } from 'react';
 import GeoMap from './components/GeoMap';
 import { portfolio, countryCounts, industryCounts } from './data/portfolio';
-const AcidSquares = lazy(() => import('./components/reactbits/AcidSquares'));
+import { glowingWaveConfig } from './config/glowing-wave';
 const CircularGallery = lazy(() => import('./components/reactbits/CircularGallery'));
 const galleryItems = portfolio.map(p => ({ image: p.image, text: p.name, description: `${p.country} · ${p.industry}`, alt: `Placeholder image for ${p.name}` }));
 const number = (n: number) => String(n).padStart(2, '0');
@@ -13,6 +13,13 @@ export default function App() {
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [reduced, setReduced] = useState(false);
   const [webgl, setWebgl] = useState<boolean | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const syncHeader = () => setScrolled(window.scrollY > 24);
+    syncHeader();
+    window.addEventListener('scroll', syncHeader, { passive: true });
+    return () => window.removeEventListener('scroll', syncHeader);
+  }, []);
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
     const sync = () => setReduced(query.matches);
@@ -26,24 +33,17 @@ export default function App() {
   const currentStartup = portfolio[activeStartup];
   return (
     <>
-      <div className="site-background" aria-hidden="true"><Suspense fallback={null}>
-        {webgl && <AcidSquares color="#00A6FF" accentColor="#FF7D7D" secondaryColor="#141427"
-          tileSize={0.75} gap={0.14} bulge={0.3} gloss={0.5} waves={0.7} speed={0.25}
-          pulse={0.25} brightness={0.85} opacity={0.7} grain={0.015} tilt={0.65}
-          detail="low" dpr={1.25} intro={false} paused={reduced} mouseInteraction={false} />}
-      </Suspense></div>
-      <div className="background-veil" aria-hidden="true" />
+      {/* Static fallback until the licensed Glowing Wave source can be installed in a private repository. */}
+      <div className="site-background" style={{ backgroundColor: glowingWaveConfig.backgroundColor }} aria-hidden="true" />
       <a href="#main" className="skip-link">Skip to content</a>
-      <header className="site-header">
-        <a href="#hero" aria-label="RoundX home"><img src="./roundx-logo.svg" className="logo" alt="RoundX" width="178" height="57" /></a>
+      <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}><div className="header-inner">
+        <a href="#hero" aria-label="RoundX home"><img src="./roundx-logo.svg" className="logo" alt="RoundX" width="178" height="61" /></a>
         <nav aria-label="Page sections"><a href="#stats">Perspectives</a><a href="#portfolio">Portfolio</a><a href="#contacts">Contacts</a></nav>
-      </header>
+      </div></header>
       <main id="main">
         <section className="hero section" id="hero" aria-labelledby="hero-title">
-          <p className="eyebrow"><span className="live-dot" /> A DIFFERENT PERSPECTIVE ON VENTURE</p>
           <h1 id="hero-title"><span>Beyond the <strong>obvious</strong>,</span><span>before the <strong>crowd</strong></span></h1>
           <h2>A <strong>micro venture</strong> fund born as a startup, investing in startups – we understand the journey because we’re on it too</h2>
-          <div className="hero-bottom" aria-hidden="true"><span>INDEPENDENT MINDS. SHARED AMBITION.</span><span className="scroll-line" /><span>SCROLL TO EXPLORE</span></div>
         </section>
 
         <section className="stats section" id="stats" aria-labelledby="stats-title">
@@ -81,7 +81,7 @@ export default function App() {
             <p className="section-subtitle">Different ideas. Different origins. A shared drive to build.</p></div>
           <div className="gallery-shell">
             {webgl ? <Suspense fallback={<p className="gallery-loading">Loading portfolio…</p>}><CircularGallery items={galleryItems}
-              bend={1.25} textColor="#FFFFFF" borderRadius={0.06} font="500 18px Poppins"
+              bend={1.25} textColor="#000000" borderRadius={0.06} font="500 18px Poppins"
               scrollSpeed={1.5} itemSize={0.65} itemAspect={1.25} gap={0.14} wave={0.4}
               fadeEdges={0.035} autoScroll={0} openOnClick={false} intro={!reduced} dpr={1.5}
               onActiveChange={setGalleryIndex} aria-label="RoundX illustrative portfolio. Drag horizontally or use arrow keys." /></Suspense> :
