@@ -29,7 +29,7 @@ export default function App() {
       <div className="site-background" aria-hidden="true"><Suspense fallback={null}>
         {webgl && <AcidSquares color="#00A6FF" accentColor="#FF7D7D" secondaryColor="#141427"
           tileSize={0.75} gap={0.14} bulge={0.3} gloss={0.5} waves={0.7} speed={0.25}
-          pulse={0.25} brightness={0.85} opacity={0.7} grain={0.015} tilt={35}
+          pulse={0.25} brightness={0.85} opacity={0.7} grain={0.015} tilt={0.65}
           detail="low" dpr={1.25} intro={false} paused={reduced} mouseInteraction={false} />}
       </Suspense></div>
       <div className="background-veil" aria-hidden="true" />
