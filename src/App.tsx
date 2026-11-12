@@ -17,6 +17,24 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [backgroundSettings, setBackgroundSettings] = useState({ angle: 55, flow: 0.8 });
   useEffect(() => {
+    const heroSubtitle = document.querySelector<HTMLElement>('#hero h2');
+    const statsTitle = document.getElementById('stats-title');
+    if (!heroSubtitle || !statsTitle) return;
+    let disposed = false;
+    const measureSectionGap = () => {
+      if (disposed) return;
+      const gap = statsTitle.getBoundingClientRect().top - heroSubtitle.getBoundingClientRect().bottom;
+      if (gap > 0) document.documentElement.style.setProperty('--section-separation', `${gap}px`);
+    };
+    const observer = new ResizeObserver(measureSectionGap);
+    observer.observe(heroSubtitle);
+    observer.observe(statsTitle);
+    window.addEventListener('resize', measureSectionGap);
+    document.fonts.ready.then(measureSectionGap);
+    measureSectionGap();
+    return () => { disposed = true; observer.disconnect(); window.removeEventListener('resize', measureSectionGap); document.documentElement.style.removeProperty('--section-separation'); };
+  }, []);
+  useEffect(() => {
     let frame = 0;
     const syncScroll = () => {
       cancelAnimationFrame(frame);

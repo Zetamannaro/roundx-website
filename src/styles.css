@@ -75,3 +75,11 @@ html{scroll-padding-top:135px}
 .gallery-shell>.circular-gallery{position:absolute;top:calc(0px - var(--gallery-top-crop));height:var(--gallery-canvas-height);width:100%}
 .gallery-shell>.fallback-gallery{align-items:flex-start;padding-top:12px}
 @media(max-width:760px){:root{--display-title-size:clamp(63.25px,14.375vw,89.7px);--section-heading-gap:35px;--gallery-canvas-height:470px;--gallery-top-crop:131.35px}}
+
+/* Reuse the actual hero-subtitle to Some Stats title gap at every viewport size.
+   App measures the reference after fonts/layout settle; only later sections use it. */
+:root{--section-separation:240px}
+.stats{padding-bottom:0}
+.portfolio-section{padding-top:var(--section-separation);padding-bottom:0}
+.contacts{padding-top:var(--section-separation);padding-bottom:0;border-top:0}
+.site-footer{margin-top:var(--section-separation);padding-top:0;border-top:0}
