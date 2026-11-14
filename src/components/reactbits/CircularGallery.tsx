@@ -5,6 +5,8 @@ import './CircularGallery.css';
 
 export type GalleryItem = {
   image: string;
+  outcome?: 'active' | 'exit' | 'lessons-learned';
+  darkTile?: boolean;
   url?: string;
   text?: string;
   description?: string;
@@ -193,6 +195,8 @@ uniform vec2 uSize;
 uniform float uRadius;
 uniform float uImageAspect;
 uniform float uReady;
+uniform float uOutcome;
+uniform float uDarkTile;
 uniform vec3 uPlaceholder;
 uniform float uGray;
 uniform float uDim;
@@ -237,14 +241,20 @@ void main() {
   float cover = clamp(0.5 - d / pixel, 0.0, 1.0);
   vec2 uv = vLocal / uSize + 0.5;
   float aspect = uSize.x / uSize.y;
-  vec2 crop = aspect > uImageAspect ? vec2(1.0, uImageAspect / aspect) : vec2(aspect / uImageAspect, 1.0);
-  vec3 image = texture(uTexture, (uv - 0.5) * crop + 0.5).rgb;
-  vec3 color = mix(uPlaceholder, image, uReady);
+  // Letterbox logos inside a padded card, preserving their aspect ratio and alpha.
+  vec2 contain = aspect > uImageAspect ? vec2(aspect / uImageAspect, 1.0) : vec2(1.0, uImageAspect / aspect);
+  vec2 logoUv = (uv - 0.5) * contain / 0.76 + 0.5;
+  float inLogo = step(0.0, logoUv.x) * step(logoUv.x, 1.0) * step(0.0, logoUv.y) * step(logoUv.y, 1.0);
+  vec4 sampleColor = texture(uTexture, clamp(logoUv, 0.0, 1.0));
+  vec3 tile = mix(vec3(0.995, 0.99, 0.98), vec3(0.075, 0.10, 0.12), uDarkTile);
+  vec3 image = mix(tile, sampleColor.rgb, sampleColor.a * inLogo);
+  vec3 color = mix(tile, image, uReady);
   float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
   color = mix(color, vec3(luma), uGray) * (1.0 - uDim);
-  float body = cover * mix(0.08, 1.0, uReady);
+  float body = cover;
   float band = abs(d - uRingGap - uRingWidth * 0.5) - uRingWidth * 0.5;
   float ring = clamp(0.5 - band / pixel, 0.0, 1.0) * uRing;
+  if (uOutcome > 1.5) ring *= step(0.35, fract((vLocal.x + vLocal.y) * 0.065));
   vec4 card = vec4(color * body, body);
   vec4 outline = vec4(uRingColor * ring, ring);
   outColor = (card + outline * (1.0 - card.a)) * uAlpha * edgeFade();
@@ -684,7 +694,6 @@ const CircularGallery = ({
       gl.uniform1f(u.uFocal, view.height * 1.207 * ratio);
       gl.uniform1f(u.uWaveTime, state.waveTime);
       gl.uniform1f(u.uFade, s.fadeEdges);
-      gl.uniform3fv(u.uPlaceholder, parse(s.textColor));
       gl.uniform3fv(u.uRingColor, parse(s.textColor));
       gl.uniform1f(u.uRingWidth, 2 * ratio);
       gl.uniform1f(u.uRingGap, 5 * ratio);
@@ -719,9 +728,14 @@ const CircularGallery = ({
         gl.bindTexture(gl.TEXTURE_2D, entry.texture || blank);
         gl.uniform1f(u.uImageAspect, entry.aspect);
         gl.uniform1f(u.uReady, entry.ready);
+        const outcome = card.item.outcome === 'exit' ? 1 : card.item.outcome === 'lessons-learned' ? 2 : 0;
+        gl.uniform1f(u.uOutcome, outcome);
+        gl.uniform1f(u.uDarkTile, card.item.darkTile ? 1 : 0);
         gl.uniform1f(u.uGray, card.gray);
         gl.uniform1f(u.uDim, card.dim);
-        gl.uniform1f(u.uRing, card.slot === state.active ? state.ring * (1 - card.focus) : 0);
+        gl.uniform3fv(u.uRingColor, outcome === 1 ? [0.83,0.59,0.20] : outcome === 2 ? [0.58,0.53,0.48] : parse(s.textColor));
+        gl.uniform1f(u.uRingWidth, (outcome === 1 ? 3 : 2) * ratio);
+        gl.uniform1f(u.uRing, outcome ? 1 : card.slot === state.active ? state.ring * (1 - card.focus) : 0);
         gl.drawElements(gl.TRIANGLES, count, gl.UNSIGNED_SHORT, 0);
       });
     };
@@ -741,11 +755,23 @@ const CircularGallery = ({
           if (!card.item.text) return;
           const entry = pool[wrap(card.slot, pool.length)];
           used.add(entry);
-          if (entry.slot !== card.slot || entry.text !== card.item.text) {
+          const labelKey = [card.item.text,card.item.description,card.item.outcome].join('|');
+          if (entry.slot !== card.slot || entry.text !== labelKey) {
             entry.slot = card.slot;
-            entry.text = card.item.text;
-            // RoundX: keep country and industry visible on every portfolio card.
-            entry.el.textContent = [card.item.text, card.item.description].filter(Boolean).join('\n');
+            entry.text = labelKey;
+            const name = document.createElement('strong');
+            name.className = 'portfolio-card-name';
+            name.textContent = card.item.text;
+            const metadata = document.createElement('span');
+            metadata.className = 'portfolio-card-meta';
+            metadata.textContent = card.item.description || '';
+            entry.el.replaceChildren(name,metadata);
+            if (card.item.outcome && card.item.outcome !== 'active') {
+              const badge = document.createElement('span');
+              badge.className = `portfolio-outcome ${card.item.outcome}`;
+              badge.textContent = card.item.outcome === 'exit' ? 'EXIT ↗' : 'Lessons learned';
+              entry.el.appendChild(badge);
+            }
           }
           if (entry.font !== font) {
             entry.font = font;
@@ -1231,7 +1257,7 @@ const CircularGallery = ({
                 buttonsRef.current[index] = el;
               }}
               tabIndex={index === active ? 0 : -1}
-              aria-label={`${item.text || item.alt || 'Image'}, ${item.description || ''}, ${index + 1} of ${count}${item.url ? ', opens demo website in a new tab' : ''}`}
+              aria-label={`${item.text || item.alt || 'Image'}, ${item.description || ''}, ${item.outcome === 'exit' ? 'Exit, a portfolio milestone, ' : item.outcome === 'lessons-learned' ? 'Lessons learned, venture no longer active, ' : ''}${index + 1} of ${count}${item.url ? ', opens company website in a new tab' : ''}`}
               aria-current={index === active ? 'true' : undefined}
               onFocus={() => engineRef.current?.focus(index)}
               onClick={event => { if (!item.url) { event.preventDefault(); engineRef.current?.open(index); } }}

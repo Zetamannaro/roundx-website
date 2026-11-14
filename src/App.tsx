@@ -1,16 +1,13 @@
-import { lazy, Suspense, useEffect, useState, type CSSProperties } from 'react';
-import GeoMap from './components/GeoMap';
-import { portfolio, countryCounts, industryCounts } from './data/portfolio';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import PortfolioStats from './components/PortfolioStats';
+import { portfolio } from './data/portfolio';
 import { grainientAtScroll, grainientPreset } from './config/grainient';
 const Grainient = lazy(() => import('./components/reactbits/Grainient'));
 const CircularGallery = lazy(() => import('./components/reactbits/CircularGallery'));
-const galleryItems = portfolio.map(p => ({ image: p.image, text: p.name, description: `${p.country} · ${p.industry}`, alt: `Placeholder image for ${p.name}`, url: p.website }));
+const galleryItems = portfolio.map(p => ({ image:p.image, text:p.name, description:`${p.country || 'Geography to confirm'} · ${p.industry}`, alt:`${p.name} logo`, url:p.website || undefined, outcome:p.status, darkTile:p.darkLogoTile }));
 const number = (n: number) => String(n).padStart(2, '0');
 
 export default function App() {
-  const [activeCountry, setActiveCountry] = useState('it');
-  const [activeIndustry, setActiveIndustry] = useState(industryCounts[0].industry);
-  const [activeStartup, setActiveStartup] = useState(0);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [reduced, setReduced] = useState(false);
   const [webgl, setWebgl] = useState<boolean | null>(null);
@@ -59,8 +56,6 @@ export default function App() {
     setWebgl(!!context); context?.getExtension('WEBGL_lose_context')?.loseContext();
     return () => query.removeEventListener('change', sync);
   }, []);
-  const currentCountry = countryCounts.find(g => g.code === activeCountry)!;
-  const currentStartup = portfolio[activeStartup];
   return (
     <>
       <div className="site-background" aria-hidden="true"><Suspense fallback={null}>
@@ -75,37 +70,15 @@ export default function App() {
       </div></header>
       <main id="main">
         <section className="hero section" id="hero" aria-labelledby="hero-title">
+          <div className="hero-copy">
           <h1 id="hero-title"><span>Beyond the <strong>obvious</strong>,</span><span>before the <strong>crowd</strong></span></h1>
           <h2>A <strong>micro venture</strong> fund born as a startup, investing in startups</h2>
+          </div>
         </section>
 
         <section className="stats section" id="stats" aria-labelledby="stats-title">
           <div className="section-heading"><h2 id="stats-title">Some Stats</h2></div>
-          <div className="stats-grid">
-            <article className="stat-card geography-card">
-              <div className="stat-top"><h3>geographies</h3><span>{number(countryCounts.length)}</span></div>
-              <GeoMap activeCountry={activeCountry} onExplore={setActiveCountry} />
-              <div className="stat-readout" aria-live="polite"><strong>{currentCountry.country}</strong><span>{currentCountry.count} startups</span></div>
-              <div className="country-grid" role="radiogroup" aria-label="Explore geographies">{countryCounts.map(g => <label key={g.code}
-                className={g.code === activeCountry ? 'active' : ''} onMouseEnter={() => setActiveCountry(g.code)}><input className="sr-only" type="radio" name="geography" value={g.code} checked={g.code === activeCountry} onChange={() => setActiveCountry(g.code)} /><span>{g.country}</span><small>{number(g.count)}</small></label>)}</div>
-              <p className="map-credit">Map: <a href="https://mapsvg.com/maps/world" target="_blank" rel="noopener noreferrer">MapSVG</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · colors adapted</p>
-            </article>
-            <article className="stat-card">
-              <div className="stat-top"><h3>industries</h3><span>{number(industryCounts.length)}</span></div>
-              <div className="industry-list" role="group" aria-label="Explore industries">{industryCounts.map(g => <label key={g.industry} className={g.industry === activeIndustry ? 'active' : ''}
-                onMouseEnter={() => setActiveIndustry(g.industry)}><input className="sr-only" type="radio" name="industry" checked={g.industry === activeIndustry} onChange={() => setActiveIndustry(g.industry)} />
-                <span className="industry-label"><span>{g.industry}</span><small>{number(g.count)}</small></span>
-                <span className="bar-track"><span style={{ '--share': `${g.count / portfolio.length * 100}%` } as CSSProperties} /></span></label>)}</div>
-              <p className="stat-footnote">Explore the sectors. Every perspective opens a different door.</p>
-            </article>
-            <article className="stat-card">
-              <div className="stat-top"><h3>startups</h3><span>{number(portfolio.length)}</span></div>
-              <div className="startup-grid" role="group" aria-label="Explore startups">{portfolio.map((p,i) => <label key={p.id} className={i === activeStartup ? 'active' : ''}
-                onMouseEnter={() => setActiveStartup(i)}><input className="sr-only" type="radio" name="startup" checked={i === activeStartup} onChange={() => setActiveStartup(i)} aria-label={`${p.name}, ${p.country}, ${p.industry}`} />{number(p.id)}</label>)}</div>
-              <div className="startup-readout" aria-live="polite"><strong>{currentStartup.name}</strong><span>{currentStartup.country}</span><small>{currentStartup.industry}</small></div>
-              <p className="stat-footnote">Every square, a different journey.<br />Hover, tap or use arrow keys to explore.</p>
-            </article>
-          </div>
+          <PortfolioStats />
         </section>
 
         <section className="portfolio-section" id="portfolio" aria-labelledby="portfolio-title">
@@ -116,11 +89,11 @@ export default function App() {
               scrollSpeed={1.5} itemSize={0.65} itemAspect={1.25} gap={0.14} wave={0.4}
               fadeEdges={0.035} autoScroll={0} openOnClick={false} intro={!reduced} dpr={1.5}
               onItemClick={item => { if (item.url) window.open(item.url, '_blank', 'noopener,noreferrer'); }}
-              onActiveChange={setGalleryIndex} aria-label="RoundX illustrative portfolio. Drag horizontally or use arrow keys. Click an image to visit its demo website." /></Suspense> :
-              <div className="fallback-gallery">{portfolio.map(p => <article key={p.id}><a href={p.website} target="_blank" rel="noopener noreferrer" aria-label={`Visit demo website for ${p.name} (opens in a new tab)`}><img src={p.image} alt={`Placeholder for ${p.name}`} loading="lazy" /></a><h3>{p.name}</h3><p>{p.country} · {p.industry}</p></article>)}</div>}
+              onActiveChange={setGalleryIndex} aria-label="RoundX portfolio. Drag horizontally or use arrow keys. Click an image to visit the company website." /></Suspense> :
+              <div className="fallback-gallery">{portfolio.map(p => <article key={p.id} className={`portfolio-card outcome-${p.status}`}><a href={p.website || undefined} target="_blank" rel="noopener noreferrer" aria-label={p.website ? `Visit ${p.name} website (opens in a new tab)` : `${p.name}: website unavailable`}><div className={`logo-tile${p.darkLogoTile?' is-dark':''}`}><img src={p.image} alt={`${p.name} logo`} loading="lazy" /></div></a><h3>{p.name}</h3><p>{p.country || 'Geography to confirm'} · {p.industry}</p>{p.status!=='active' && <span className={`portfolio-outcome ${p.status}`}>{p.status==='exit'?'EXIT ↗':'Lessons learned'}</span>}</article>)}</div>}
           </div>
           <div className="gallery-meta section"><span>DRAG TO EXPLORE <span aria-hidden="true">↔</span></span><span>{number(galleryIndex + 1)} <i>/ {portfolio.length}</i></span></div>
-          <p className="portfolio-note section">25 placeholder positions · sample imagery, countries and industries. Image links open demo websites in a new tab.</p>
+          <p className="portfolio-note section">{portfolio.length} companies · Country information awaiting confirmation. Statuses supplied by RoundX.</p>
         </section>
 
         <section className="contacts section" id="contacts" aria-labelledby="contacts-title">

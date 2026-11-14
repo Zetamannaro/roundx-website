@@ -14,8 +14,11 @@ See licenses/poppins-OFL.txt.
 World map paths from @svg-maps/world, based on MapSVG: https://mapsvg.com/maps/world (CC BY 4.0).
 See licenses/svg-maps-world-LICENSE.md. Coloring and interactive highlights adapted for RoundX.
 
-## Placeholder photographs
-Locally hosted copies from Unsplash, used solely as temporary portfolio imagery:
+## Company portfolio logos
+Company logos are retrieved from official websites, official linked profiles or the user's existing RoundX portfolio. See PORTFOLIO_ASSETS.md for per-asset URLs and native-vector vs embedded-raster distinctions. Original brand colors are preserved. Logos identify the portfolio list supplied by the user and remain the property of their owners.
+
+## Retained, unused placeholder photographs
+Locally hosted copies from Unsplash, no longer rendered in the portfolio:
 https://images.unsplash.com/photo-1500530855697-b586d89ba3ee
 https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05
 https://images.unsplash.com/photo-1441974231531-c6227db76b6e
