@@ -196,7 +196,6 @@ uniform float uRadius;
 uniform float uImageAspect;
 uniform float uReady;
 uniform float uOutcome;
-uniform float uDarkTile;
 uniform vec3 uPlaceholder;
 uniform float uGray;
 uniform float uDim;
@@ -246,12 +245,11 @@ void main() {
   vec2 logoUv = (uv - 0.5) * contain / 0.76 + 0.5;
   float inLogo = step(0.0, logoUv.x) * step(logoUv.x, 1.0) * step(0.0, logoUv.y) * step(logoUv.y, 1.0);
   vec4 sampleColor = texture(uTexture, clamp(logoUv, 0.0, 1.0));
-  vec3 tile = mix(vec3(0.995, 0.99, 0.98), vec3(0.075, 0.10, 0.12), uDarkTile);
-  vec3 image = mix(tile, sampleColor.rgb, sampleColor.a * inLogo);
-  vec3 color = mix(tile, image, uReady);
+  // Preserve the logo's genuine alpha instead of compositing it onto a card.
+  vec3 color = sampleColor.rgb;
   float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
   color = mix(color, vec3(luma), uGray) * (1.0 - uDim);
-  float body = cover;
+  float body = cover * sampleColor.a * inLogo * uReady;
   float band = abs(d - uRingGap - uRingWidth * 0.5) - uRingWidth * 0.5;
   float ring = clamp(0.5 - band / pixel, 0.0, 1.0) * uRing;
   if (uOutcome > 1.5) ring *= step(0.35, fract((vLocal.x + vLocal.y) * 0.065));
@@ -730,7 +728,6 @@ const CircularGallery = ({
         gl.uniform1f(u.uReady, entry.ready);
         const outcome = card.item.outcome === 'exit' ? 1 : card.item.outcome === 'lessons-learned' ? 2 : 0;
         gl.uniform1f(u.uOutcome, outcome);
-        gl.uniform1f(u.uDarkTile, card.item.darkTile ? 1 : 0);
         gl.uniform1f(u.uGray, card.gray);
         gl.uniform1f(u.uDim, card.dim);
         gl.uniform3fv(u.uRingColor, outcome === 1 ? [0.83,0.59,0.20] : outcome === 2 ? [0.58,0.53,0.48] : parse(s.textColor));

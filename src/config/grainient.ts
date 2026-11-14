@@ -1,5 +1,5 @@
 export const grainientPreset = {
-  colors: ['#ff8a24', '#dd5e13', '#78350f', '#21120a', '#000000'],
+  colors: ['#ffffff', '#d0b7b2', '#baa29a', '#c69370', '#c69358'],
   angle: 55,
   flow: 0.8,
   silk: 0.35,

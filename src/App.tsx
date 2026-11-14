@@ -70,10 +70,8 @@ export default function App() {
       </div></header>
       <main id="main">
         <section className="hero section" id="hero" aria-labelledby="hero-title">
-          <div className="hero-copy">
           <h1 id="hero-title"><span>Beyond the <strong>obvious</strong>,</span><span>before the <strong>crowd</strong></span></h1>
           <h2>A <strong>micro venture</strong> fund born as a startup, investing in startups</h2>
-          </div>
         </section>
 
         <section className="stats section" id="stats" aria-labelledby="stats-title">
@@ -87,7 +85,7 @@ export default function App() {
             {webgl ? <Suspense fallback={<p className="gallery-loading">Loading portfolio…</p>}><CircularGallery items={galleryItems}
               bend={1.25} textColor="#000000" borderRadius={0.06} font="500 18px Poppins"
               scrollSpeed={1.5} itemSize={0.65} itemAspect={1.25} gap={0.14} wave={0.4}
-              fadeEdges={0.035} autoScroll={0} openOnClick={false} intro={!reduced} dpr={1.5}
+              fadeEdges={0.035} shadow={0} autoScroll={0} openOnClick={false} intro={!reduced} dpr={1.5}
               onItemClick={item => { if (item.url) window.open(item.url, '_blank', 'noopener,noreferrer'); }}
               onActiveChange={setGalleryIndex} aria-label="RoundX portfolio. Drag horizontally or use arrow keys. Click an image to visit the company website." /></Suspense> :
               <div className="fallback-gallery">{portfolio.map(p => <article key={p.id} className={`portfolio-card outcome-${p.status}`}><a href={p.website || undefined} target="_blank" rel="noopener noreferrer" aria-label={p.website ? `Visit ${p.name} website (opens in a new tab)` : `${p.name}: website unavailable`}><div className={`logo-tile${p.darkLogoTile?' is-dark':''}`}><img src={p.image} alt={`${p.name} logo`} loading="lazy" /></div></a><h3>{p.name}</h3><p>{p.country || 'Geography to confirm'} · {p.industry}</p>{p.status!=='active' && <span className={`portfolio-outcome ${p.status}`}>{p.status==='exit'?'EXIT ↗':'Lessons learned'}</span>}</article>)}</div>}

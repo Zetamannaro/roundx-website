@@ -4,7 +4,7 @@
 Native vector logos: 10. Original rasters packaged in SVG: 14 (including background removal for the historical XWorks JPEG).
 The latter are SVG containers, not vector traces; original brand pixels and colors are retained. Transparent padding is cropped, not logo content.
 Startup Geeks was delivered as WebP despite its .png URL and converted losslessly to PNG inside the SVG for renderer compatibility.
-IH1, Picterus and ClimeFi use official white lettering and therefore receive dark card surfaces.
+IH1, Picterus and ClimeFi retain their official white lettering. All logos now render transparently over the background, without white or dark card surfaces.
 Vitameals and Moonstone use the portfolio-era logos already published by RoundX.
 TimeFlow and GemaTEG use full colored official logos instead of symbol-only or white alternatives.
 

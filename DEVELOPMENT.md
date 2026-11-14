@@ -16,13 +16,13 @@ There are 19 active entities, 1 EXIT and 4 Lessons learned. Display language avo
 Country/code are null until supplied by the user. The geography card explicitly shows awaiting confirmation, without carrying forward the old 8 demo countries.
 Geography, macro-sector and industry are derived from one dataset. Selecting a chip highlights related values across all three cards; selecting it again or clearing the selection restores everything. Once countries are added to the records, geography cross-highlighting works with the same logic.
 Portfolio websites and logo provenance are in src/data/portfolio-assets.ts and PORTFOLIO_ASSETS.md.
-Logos use native vector originals where available and lossless transparent raster-in-SVG containers otherwise. White logos use dark neutral cards. No brand marks were invented or approximated.
+Logos use native vector originals where available and transparent raster-in-SVG containers otherwise. Every logo is rendered with its original alpha, without a white or dark rectangular fill. No brand marks were invented or approximated.
 Circular Gallery supports dragging, horizontal wheel and keyboard navigation.
 Normal vertical scrolling is preserved.
 All landscape placeholders have been replaced in the rendered portfolio with company logos.
 
 ## Motion and fallbacks
-Grainient from the official free React Bits repository is the fixed full-viewport background. Orange-to-black colors: src/config/grainient.ts. High-opacity warm-white content surfaces keep all black text readable independently of the moving gradient.
+Grainient from the official free React Bits repository is the fixed full-viewport background. The user's original white/beige/copper preset has been restored in src/config/grainient.ts. There are no added white text panels or logo backplates.
 Scroll linearly maps angle 55 to 360 and flow 0.8 to 2 (the maxima exposed in the official demo controls). The maximum is reached at the document bottom, with clamping for overscroll and resize/layout updates.
 The original component registers window-level pointermove and pointerdown handlers, so interactive stirring and clickSwirl remain active over page sections. Its canvas does not intercept links or drag gestures.
 Reduce motion disables autonomous speed, animated grain, cursor effects and intro animation; scroll-linked settings remain deterministic.
