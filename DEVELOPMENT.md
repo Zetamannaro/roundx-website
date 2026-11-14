@@ -13,10 +13,10 @@ Poppins is bundled locally through @fontsource/poppins; no Google Fonts requests
 ## Single source of portfolio data
 src/data/portfolio.ts contains the 24 entities and exact macro-sector, industry and outcome classifications supplied by RoundX.
 There are 19 active entities, 1 EXIT and 4 Lessons learned. Display language avoids FAILED; logo colors are never desaturated to represent an outcome.
-Country/code are null until supplied by the user. The geography card explicitly shows awaiting confirmation, without carrying forward the old 8 demo countries.
-Geography, macro-sector and industry are derived from one dataset. Selecting a chip highlights related values across all three cards; selecting it again or clearing the selection restores everything. Once countries are added to the records, geography cross-highlighting works with the same logic.
+Geography follows the user table: 8 countries. Kampaay belongs to Italy and Sweden; GemaTEG to USA, Italy and Switzerland. Each company is counted once in company totals and in every applicable country.
+Geography, macro-sector and industry are derived from one dataset. Selecting a chip highlights related values across all three cards; selecting it again or clearing the selection restores everything. Selecting an individual country matches multi-country records; selecting a sector or industry highlights every related country.
 Portfolio websites and logo provenance are in src/data/portfolio-assets.ts and PORTFOLIO_ASSETS.md.
-Logos use native vector originals where available and transparent raster-in-SVG containers otherwise. Every logo is rendered with its original alpha, without a white or dark rectangular fill. No brand marks were invented or approximated.
+All 24 logos are real vector SVGs without embedded raster images. Official native geometry is preferred; other marks are reconstructed as Bezier paths from original references. Colors and transparent backgrounds are preserved. Reconstructed contours inherit source-detail limits; see PORTFOLIO_ASSETS.md. The WebGL gallery samples SVGs at 1536px longest-edge resolution and uses a 2x-density canvas; the fallback uses SVG images directly.
 Circular Gallery supports dragging, horizontal wheel and keyboard navigation.
 Normal vertical scrolling is preserved.
 All landscape placeholders have been replaced in the rendered portfolio with company logos.

@@ -15,7 +15,7 @@ World map paths from @svg-maps/world, based on MapSVG: https://mapsvg.com/maps/w
 See licenses/svg-maps-world-LICENSE.md. Coloring and interactive highlights adapted for RoundX.
 
 ## Company portfolio logos
-Company logos are retrieved from official websites, official linked profiles or the user's existing RoundX portfolio. See PORTFOLIO_ASSETS.md for per-asset URLs and native-vector vs embedded-raster distinctions. Original brand colors are preserved. Logos identify the portfolio list supplied by the user and remain the property of their owners.
+Company logos are retrieved from official websites, official linked profiles or the user's existing RoundX portfolio. See PORTFOLIO_ASSETS.md for per-asset URLs and native-vector vs reconstructed-vector distinctions. Original brand colors are preserved. Logos identify the portfolio list supplied by the user and remain the property of their owners.
 
 ## Retained, unused placeholder photographs
 Locally hosted copies from Unsplash, no longer rendered in the portfolio:

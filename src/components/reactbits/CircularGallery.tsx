@@ -544,10 +544,19 @@ const CircularGallery = ({
       image.decoding = 'async';
       image.onload = () => {
         if (!textures.has(url)) return;
+        // Rasterize vector artwork at display quality instead of uploading its
+        // often tiny intrinsic SVG dimensions (some official marks are 165px).
+        const vectorCanvas = document.createElement('canvas');
+        const longestEdge = Math.min(1536, gl.getParameter(gl.MAX_TEXTURE_SIZE));
+        const scale = longestEdge / Math.max(1, image.naturalWidth, image.naturalHeight);
+        vectorCanvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        vectorCanvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        const vectorContext = vectorCanvas.getContext('2d');
+        vectorContext?.drawImage(image, 0, 0, vectorCanvas.width, vectorCanvas.height);
         const texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, vectorContext ? vectorCanvas : image);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
