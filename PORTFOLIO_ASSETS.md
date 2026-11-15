@@ -8,7 +8,7 @@ Vector redraws preserve source shapes and brand colors but are reconstructions, 
 
 Up2You, Cents, Evenfi and TextYess were checked against the exact references supplied in chat. Cents and TextYess retain their white lettering; the purple profile tiles were removed. Official white logo elements elsewhere are preserved without adding dark backplates.
 
-The WebGL gallery rasterizes the SVG geometry at a 1536px longest edge for texture sampling and renders at 2× pixel density, rather than uploading low intrinsic SVG dimensions. The non-WebGL fallback displays the original SVGs directly.
+Drift Wall displays the original SVG files directly using contained image elements, so their geometry remains sharp at the rendered size. All card metadata and status badges are inside the card. The four Lessons learned companies have no external link.
 
 | Entity | Website | Geometry | Source / reference |
 |---|---|---|---|

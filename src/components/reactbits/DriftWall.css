@@ -1,0 +1,31 @@
+/* React Bits Drift Wall: perspective plane, independent drifting columns and hover lift.
+   Adapted for transparent SVG marks and complete RoundX portfolio cards. */
+.drift-wall{position:relative;width:100%;height:100%;overflow:hidden;perspective:var(--dw-perspective,1500px);perspective-origin:50% 50%;mask-image:linear-gradient(to bottom,transparent,#000 6%,#000 94%,transparent);-webkit-mask-image:linear-gradient(to bottom,transparent,#000 6%,#000 94%,transparent)}
+.drift-wall__plane{position:absolute;top:50%;left:50%;display:flex;flex-direction:row;transform-style:preserve-3d;transform-origin:50% 50%;will-change:transform}
+.drift-wall__col{position:relative;width:calc(var(--dw-tile-w) + var(--dw-gap));transform-style:preserve-3d}
+.drift-wall__track{display:flex;flex-direction:column;will-change:transform;transform-style:preserve-3d}
+.drift-wall__tile{position:relative;display:block;width:100%;height:calc(var(--dw-tile-h) + var(--dw-gap));flex:0 0 auto;outline:none;transform-style:preserve-3d;cursor:default;color:#000}
+a.drift-wall__tile{cursor:pointer}
+.drift-wall__inner{position:absolute;inset:calc(var(--dw-gap)/2);display:flex;flex-direction:column;padding:20px;border:1px solid #00000030;border-radius:var(--dw-radius,14px);background:transparent;opacity:1;transform:translateZ(0);pointer-events:none;transition:transform .42s cubic-bezier(.22,1,.36,1),border-color .3s,box-shadow .3s}
+.drift-wall__logo{height:105px;width:100%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.drift-wall__logo img{display:block;max-width:100%;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 1px 1px #00000038);user-select:none;-webkit-user-drag:none}
+.drift-wall__copy{display:flex;flex-direction:column;gap:3px;margin-top:15px;overflow-wrap:anywhere}
+.drift-wall__name{font-size:17px;font-weight:600;line-height:1.3;letter-spacing:-.035em}
+.drift-wall__geography{font-size:11px;line-height:1.45;margin-top:3px}
+.drift-wall__sector,.drift-wall__industry{font-size:10px;line-height:1.5}
+.drift-wall__sector{opacity:.7}
+.drift-wall__industry{font-weight:500}
+.drift-wall__external{position:absolute;right:14px;top:9px;font-size:16px;opacity:.5}
+.drift-wall__badge{display:inline-flex;gap:7px;align-items:center;align-self:flex-start;font-size:9px;font-weight:500;line-height:1.5;padding:3px 8px;border-radius:5px;margin-top:auto;letter-spacing:.025em}
+.drift-wall__badge--exit{border:1px solid #9b7020;background:linear-gradient(110deg,#efcb76,#fff0bd,#e8b84e);color:#4e3303}
+.drift-wall__badge--lesson{border:1px dashed #655e58;color:#403b34;background:transparent}
+.drift-wall__tile--exit .drift-wall__inner{border-color:#a87c25;box-shadow:inset 0 0 0 1px #d7ac4b55}
+.drift-wall__tile--lessons-learned .drift-wall__inner{border-style:dashed;border-color:#786d6580}
+.drift-wall__tile.is-active .drift-wall__inner,.drift-wall__tile:focus-visible .drift-wall__inner{transform:translateZ(var(--dw-lift,35px));border-color:#0009;box-shadow:0 12px 26px -16px #0003}
+.drift-wall__tile:focus-visible .drift-wall__inner{outline:2px solid #102952;outline-offset:3px}
+.drift-wall:focus-visible{outline:2px solid #102952;outline-offset:4px}
+.drift-wall--stationary{height:auto;overflow:visible;perspective:none;mask-image:none;-webkit-mask-image:none}
+.drift-wall__grid{display:grid;grid-template-columns:repeat(var(--dw-columns),var(--dw-tile-w));justify-content:center;padding:12px 0}
+.drift-wall--stationary .drift-wall__inner{transform:none!important;transition:border-color .2s}
+@media(max-width:600px){.drift-wall__inner{padding:14px 12px}.drift-wall__logo{height:92px}.drift-wall__name{font-size:14px}.drift-wall__copy{margin-top:14px;gap:4px}.drift-wall__geography{font-size:10px}.drift-wall__sector,.drift-wall__industry{font-size:9px}.drift-wall__badge{font-size:8px;padding:3px 5px}}
+@media(prefers-reduced-motion:reduce){.drift-wall__plane,.drift-wall__track{will-change:auto}}

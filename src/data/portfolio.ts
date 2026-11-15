@@ -187,14 +187,19 @@ export const portfolio: Startup[] = rows.map(([id,name,macroSector,industry,stat
   id,name,macroSector,industry,status,countries:geographies[id],
   country:geographies[id].join(' / '),code:countryCodes[geographies[id][0]],
   image: `./logos/${id}.svg`,
-  website:portfolioAssets[id]?.website ?? null,
+  website:status === 'lessons-learned' ? null : portfolioAssets[id]?.website ?? null,
   darkLogoTile:portfolioAssets[id]?.darkLogoTile ?? false,
 }));
 export type StatDimension = 'country'|'macroSector'|'industry';
 export type PortfolioSelection = {dimension:StatDimension;value:string}|null;
+export type PortfolioFilters = Partial<Record<StatDimension,string>>;
 export function dimensionValues(startup:Startup,dimension:StatDimension):string[] { return dimension==='country' ? startup.countries : [startup[dimension]]; }
 export function matchesDimension(startup:Startup,dimension:StatDimension,value:string):boolean { return dimensionValues(startup,dimension).includes(value); }
 export function selectPortfolio(selection:PortfolioSelection):Startup[] { return selection ? portfolio.filter(p=>matchesDimension(p,selection.dimension,selection.value)) : portfolio; }
+export function filterPortfolio(filters:PortfolioFilters, except?:StatDimension):Startup[] {
+  return portfolio.filter(startup => (Object.entries(filters) as [StatDimension,string][])
+    .every(([dimension,value]) => dimension===except || !value || matchesDimension(startup,dimension,value)));
+}
 export function statGroups(dimension:StatDimension) {
   const counts=new Map<string,number>();
   portfolio.forEach(p=>dimensionValues(p,dimension).forEach(value=>counts.set(value,(counts.get(value)||0)+1)));

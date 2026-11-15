@@ -1,27 +1,29 @@
-import { useState } from 'react';
-import { portfolio,selectPortfolio,statGroups,matchesDimension,type StatDimension,type PortfolioSelection } from '../data/portfolio';
-const dimensions: {dimension:StatDimension;title:string}[]=[{dimension:'country',title:'geography'},{dimension:'macroSector',title:'macro-sector'},{dimension:'industry',title:'industry'}];
-export default function PortfolioStats(){
-  const [selection,setSelection]=useState<PortfolioSelection>(null);
-  const matching=selectPortfolio(selection);
-  const toggle=(dimension:StatDimension,value:string)=>setSelection(previous=>previous?.dimension===dimension&&previous.value===value?null:{dimension,value});
-  return <>
-    <div className="linked-stats-summary" aria-live="polite"><span>{matching.length} of {portfolio.length} companies</span>
-      {selection?<button type="button" className="clear-stat-selection" onClick={()=>setSelection(null)}>{selection.value} <span aria-hidden="true">×</span><span className="sr-only">Clear selection</span></button>:<span className="stats-hint">Select a category to see the connections</span>}
-    </div>
-    <div className="stats-grid linked-stats">{dimensions.map(({dimension,title})=>{
-      const groups=statGroups(dimension);
-      const confirmed=groups.length;
-      return <article className="stat-card linked-stat-card" key={dimension} aria-labelledby={`stat-${dimension}`}>
-        <div className="stat-top"><h3 id={`stat-${dimension}`}>{title}</h3><span>{String(confirmed).padStart(2,'0')}</span></div>
-        <div className="stat-options" role="group" aria-label={`Explore ${title}`}>{groups.map(group=>{
-          const related=matching.filter(p=>matchesDimension(p,dimension,group.value)).length;
-          const selected=selection?.dimension===dimension&&selection.value===group.value;
-          return <button key={group.value} type="button" aria-pressed={selected}
-            className={`stat-option${selected?' is-selected':''}${selection&&related>0?' is-related':''}${selection&&related===0?' is-dimmed':''}`}
-            onClick={()=>toggle(dimension,group.value)}><span>{group.value}</span><small>{selection?related:group.count}</small></button>;
-        })}</div>
-      </article>;
-    })}</div>
-  </>;
+import { useId } from 'react';
+import { filterPortfolio, statGroups, matchesDimension, type StatDimension, type PortfolioFilters } from '../data/portfolio';
+
+const dimensions: {dimension:StatDimension;title:string;all:string}[] = [
+  {dimension:'country',title:'Geography',all:'All geographies'},
+  {dimension:'macroSector',title:'Macro-sector',all:'All macro-sectors'},
+  {dimension:'industry',title:'Industry',all:'All industries'},
+];
+
+export default function PortfolioStats({filters,onChange}:{filters:PortfolioFilters;onChange:(next:PortfolioFilters)=>void}) {
+  const id = useId();
+  return <div className="portfolio-filters" role="group" aria-label="Filter portfolio">
+    {dimensions.map(({dimension,title,all}) => {
+      const groups = statGroups(dimension);
+      const related = filterPortfolio(filters,dimension);
+      return <div className="portfolio-filter" key={dimension}>
+        <label htmlFor={`${id}-${dimension}`}>{title}<span aria-label={`${groups.length} total`}>{String(groups.length).padStart(2,'0')}</span></label>
+        <select id={`${id}-${dimension}`} value={filters[dimension] || ''} aria-controls="portfolio-wall"
+          onChange={event=>onChange({...filters,[dimension]:event.target.value})}>
+          <option value="">{all}</option>
+          {groups.map(({value})=>{
+            const count = related.filter(startup=>matchesDimension(startup,dimension,value)).length;
+            return <option key={value} value={value} disabled={count===0 && filters[dimension]!==value}>{value} ({count})</option>;
+          })}
+        </select>
+      </div>;
+    })}
+  </div>;
 }

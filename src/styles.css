@@ -116,3 +116,23 @@ html{scroll-padding-top:135px}
 .linked-stats button:focus-visible{outline:2px solid #003e59;outline-offset:3px}
 .contact-rows p{background:transparent;backdrop-filter:none}
 @media(max-width:760px){.linked-stat-card{min-height:0;padding:25px}.linked-stats-summary{flex-wrap:wrap;font-size:10px}.stat-option{font-size:11px}}
+
+/* Unified portfolio: compact linked filters and the React Bits Drift Wall. */
+.portfolio-section{padding-top:130px;padding-bottom:0;overflow:visible}
+.portfolio-section>.section-heading{margin-bottom:var(--section-heading-gap)}
+.portfolio-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;width:100%;max-width:1050px;margin:0 auto}
+.portfolio-filter{min-width:0;border-bottom:1px solid #0005;padding:0 0 9px}
+.portfolio-filter label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;font-weight:500;margin-bottom:9px}
+.portfolio-filter label>span{font-size:11px;font-variant-numeric:tabular-nums;font-weight:400;opacity:.65}
+.portfolio-filter select{display:block;width:100%;min-width:0;max-width:100%;font:400 12px Poppins,sans-serif;color:#000;background:transparent;border:0;border-radius:0;padding:6px 22px 6px 0;cursor:pointer;text-overflow:ellipsis}
+.portfolio-filter option{background:#efe8e3;color:#000}
+.portfolio-filter select:focus-visible{outline:2px solid #102952;outline-offset:4px}
+.portfolio-results{max-width:1050px;margin:16px auto 8px;display:flex;justify-content:space-between;gap:12px;align-items:center;min-height:28px;font-size:10px}
+.portfolio-results p{margin:0;opacity:.65}
+.portfolio-results button{display:inline-flex;align-items:center;gap:14px;background:transparent;color:#000;border:0;border-bottom:1px solid #0005;font:400 10px Poppins,sans-serif;padding:4px 0;cursor:pointer}
+.portfolio-results button>span{font-size:16px;line-height:1}
+.portfolio-wall{height:930px;position:relative;width:100%}
+.portfolio-wall:has(.drift-wall--stationary){height:auto;min-height:340px}
+.wall-loading,.portfolio-empty{text-align:center;padding:100px 20px;font-size:13px;color:#000}
+@media(max-width:760px){.portfolio-section{padding-top:80px}.portfolio-filters{gap:15px}.portfolio-filter label{font-size:10px;gap:5px}.portfolio-filter label>span{font-size:10px}.portfolio-filter select{font-size:10px}.portfolio-wall{height:860px}.site-header nav a:first-child{display:inline}}
+@media(max-width:420px){.portfolio-filters{gap:10px}.portfolio-filter label{font-size:9px}.portfolio-filter select{font-size:9px;padding-right:0}.portfolio-filter label>span{font-size:9px}}
