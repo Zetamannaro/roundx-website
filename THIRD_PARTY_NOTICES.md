@@ -1,10 +1,10 @@
 # Third-party assets
 ## React Bits
-Grainient.tsx/css, DriftWall.tsx/css, AcidSquares.tsx/css (retained but unused) and CircularGallery.tsx/css (retained but unused) by David Haz:
+Grainient.tsx/css, DriftWall.tsx/css (retained but unused), AcidSquares.tsx/css (retained but unused) and CircularGallery.tsx/css (retained but unused) by David Haz:
 https://github.com/DavidHDev/react-bits
 Grainient and CircularGallery retrieved 2026-11-12; DriftWall retrieved 2026-11-15 from src/ts-default/Components/DriftWall. MIT + Commons Clause. Full text: licenses/react-bits-LICENSE.md.
 CircularGallery is adapted for below-image country/industry captions, external website links, accessible anchors and normal vertical scrolling. Grainient uses the original source; angle and flow are driven through props by page scrolling.
-DriftWall retains its perspective plane, independent column drift, cursor parallax and hover lift. RoundX adds contained SVG logos, complete metadata and status badges, filtered results, responsive columns, visibility pausing, stationary reduced-motion/keyboard views, and non-link failed-company articles.
+DriftWall is no longer imported or rendered. PortfolioGrid is an independent static React/CSS grid with the established RoundX card styling, contained SVG logos, full metadata and status badges.
 Included in the RoundX website, not distributed as a standalone component library.
 
 ## Poppins

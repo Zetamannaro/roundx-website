@@ -26,3 +26,37 @@ assert.equal(portfolio.filter(s=>s.status==='lessons-learned').length, 4);
 assert.ok(portfolio.filter(s=>s.status==='lessons-learned').every(s=>s.website===null));
 assert.ok(portfolio.find(s=>s.status==='exit').website);
 console.log('PASS: scroll palettes/angle, clamps, compound filters, multi-country matching, facet totals and failed-company link removal.');
+
+// Render the real grid through filter changes: every match must appear exactly once.
+const {readFileSync} = await import('node:fs');
+const {createRequire} = await import('node:module');
+const require = createRequire(import.meta.url);
+const ts = require('typescript');
+const React = require('react');
+const {renderToStaticMarkup} = require('react-dom/server');
+const gridSource = readFileSync(new URL('../src/components/PortfolioGrid.tsx',import.meta.url),'utf8');
+const compiledGrid = ts.transpileModule(gridSource,{compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2022}}).outputText;
+const gridModule = {exports:{}};
+new Function('require','module','exports',compiledGrid)(require,gridModule,gridModule.exports);
+const PortfolioGrid = gridModule.exports.default;
+for (const filters of [{},{country:'Italy'},{country:'Italy',industry:'FinTech'},{country:'Sweden'},
+  {country:'Sweden',industry:'FinTech'},{},{country:'USA'},{}]) {
+  const companies = filterPortfolio(filters);
+  const html = renderToStaticMarkup(React.createElement(PortfolioGrid,{companies}));
+  const ids = [...html.matchAll(/data-company="([^"]+)"/g)].map(match=>match[1]);
+  assert.deepEqual(ids,companies.map(company=>company.id));
+  assert.equal(new Set(ids).size,ids.length);
+  assert.equal([...html.matchAll(/<img /g)].length,companies.length);
+}
+for (const company of portfolio) {
+  const html = renderToStaticMarkup(React.createElement(PortfolioGrid,{companies:[company]}));
+  assert.ok(html.includes(company.image));
+  assert.ok(html.includes('<h3>'));
+  assert.ok(html.includes('company-card-details'));
+  if(company.status==='lessons-learned'){
+    assert.ok(!html.includes('<a '));
+    assert.ok(html.includes('Lessons learned'));
+  } else assert.ok(html.includes('<a '));
+  if(company.status==='exit')assert.ok(html.includes('company-badge-exit'));
+}
+console.log('PASS: full/filter/empty/reset grid renders, unique cards, all SVGs, metadata, status badges and failed-company links.');

@@ -117,7 +117,7 @@ html{scroll-padding-top:135px}
 .contact-rows p{background:transparent;backdrop-filter:none}
 @media(max-width:760px){.linked-stat-card{min-height:0;padding:25px}.linked-stats-summary{flex-wrap:wrap;font-size:10px}.stat-option{font-size:11px}}
 
-/* Unified portfolio: compact linked filters and the React Bits Drift Wall. */
+/* Unified portfolio: compact linked filters and a static company grid. */
 .portfolio-section{padding-top:130px;padding-bottom:0;overflow:visible}
 .portfolio-section>.section-heading{margin-bottom:var(--section-heading-gap)}
 .portfolio-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;width:100%;max-width:1050px;margin:0 auto}
@@ -131,8 +131,32 @@ html{scroll-padding-top:135px}
 .portfolio-results p{margin:0;opacity:.65}
 .portfolio-results button{display:inline-flex;align-items:center;gap:14px;background:transparent;color:#000;border:0;border-bottom:1px solid #0005;font:400 10px Poppins,sans-serif;padding:4px 0;cursor:pointer}
 .portfolio-results button>span{font-size:16px;line-height:1}
-.portfolio-wall{height:930px;position:relative;width:100%}
-.portfolio-wall:has(.drift-wall--stationary){height:auto;min-height:340px}
-.wall-loading,.portfolio-empty{text-align:center;padding:100px 20px;font-size:13px;color:#000}
-@media(max-width:760px){.portfolio-section{padding-top:80px}.portfolio-filters{gap:15px}.portfolio-filter label{font-size:10px;gap:5px}.portfolio-filter label>span{font-size:10px}.portfolio-filter select{font-size:10px}.portfolio-wall{height:860px}.site-header nav a:first-child{display:inline}}
+.portfolio-empty{text-align:center;padding:100px 20px;font-size:13px;color:#000}
+@media(max-width:760px){.portfolio-section{padding-top:80px}.portfolio-filters{gap:15px}.portfolio-filter label{font-size:10px;gap:5px}.portfolio-filter label>span{font-size:10px}.portfolio-filter select{font-size:10px}.site-header nav a:first-child{display:inline}}
 @media(max-width:420px){.portfolio-filters{gap:10px}.portfolio-filter label{font-size:9px}.portfolio-filter select{font-size:9px;padding-right:0}.portfolio-filter label>span{font-size:9px}}
+
+/* All companies stay in document flow. Filtering changes only the list items. */
+.portfolio-grid-container{width:100%;margin-top:20px;min-height:240px}
+.company-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0;align-items:stretch}
+.company-grid>li{min-width:0;margin:0;padding:0;display:flex}
+.company-card{position:relative;display:flex;flex-direction:column;min-width:0;width:100%;min-height:222px;padding:16px;border:1px solid #00000030;border-radius:14px;color:#000;background:transparent}
+a.company-card:hover{border-color:#0009}
+a.company-card:focus-visible{outline:2px solid #102952;outline-offset:4px}
+.company-card-logo{height:65px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;flex-shrink:0}
+.company-card-logo img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 1px 1px #00000038)}
+.company-card h3{margin:0 0 7px;font-size:14px;font-weight:600;line-height:1.35;letter-spacing:-.025em;overflow-wrap:anywhere}
+.company-card-details{display:flex;flex-direction:column;gap:3px}
+.company-card-details p{margin:0;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
+.company-card-sector{opacity:.7}
+.company-card-industry{font-weight:500}
+.company-card-footer{display:flex;align-items:flex-end;min-height:25px;padding-top:9px;margin-top:auto}
+.company-card-external{position:absolute;right:10px;top:7px;font-size:14px;line-height:1;opacity:.5}
+.company-badge{display:inline-flex;align-items:center;gap:7px;border-radius:5px;padding:3px 7px;font-size:8px;line-height:1.5;font-weight:500;letter-spacing:.025em}
+.company-badge-exit{border:1px solid #9b7020;background:linear-gradient(110deg,#efcb76,#fff0bd,#e8b84e);color:#4e3303}
+.company-badge-lesson{border:1px dashed #655e58;background:transparent;color:#403b34}
+.company-card-exit{border-color:#a87c25;box-shadow:inset 0 0 0 1px #d7ac4b55}
+.company-card-lessons-learned{border-style:dashed;border-color:#786d6580}
+@media(max-width:1199px){.company-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:850px){.company-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.company-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.company-card{min-height:214px;padding:14px 12px}.company-card-logo{height:56px}.company-card h3{font-size:13px}.company-card-details p{font-size:9px}}
+@media(max-width:330px){.company-grid{grid-template-columns:1fr}}

@@ -15,7 +15,7 @@ export default function PortfolioStats({filters,onChange}:{filters:PortfolioFilt
       const related = filterPortfolio(filters,dimension);
       return <div className="portfolio-filter" key={dimension}>
         <label htmlFor={`${id}-${dimension}`}>{title}<span aria-label={`${groups.length} total`}>{String(groups.length).padStart(2,'0')}</span></label>
-        <select id={`${id}-${dimension}`} value={filters[dimension] || ''} aria-controls="portfolio-wall"
+        <select id={`${id}-${dimension}`} value={filters[dimension] || ''} aria-controls="portfolio-grid"
           onChange={event=>onChange({...filters,[dimension]:event.target.value})}>
           <option value="">{all}</option>
           {groups.map(({value})=>{

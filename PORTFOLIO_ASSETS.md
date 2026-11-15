@@ -8,7 +8,7 @@ Vector redraws preserve source shapes and brand colors but are reconstructions, 
 
 Up2You, Cents, Evenfi and TextYess were checked against the exact references supplied in chat. Cents and TextYess retain their white lettering; the purple profile tiles were removed. Official white logo elements elsewhere are preserved without adding dark backplates.
 
-Drift Wall displays the original SVG files directly using contained image elements, so their geometry remains sharp at the rendered size. All card metadata and status badges are inside the card. The four Lessons learned companies have no external link.
+The static portfolio grid displays the original SVG files directly using contained image elements, so their geometry remains sharp at the rendered size. All card metadata and status badges are inside the card. The four Lessons learned companies have no external link.
 
 | Entity | Website | Geometry | Source / reference |
 |---|---|---|---|

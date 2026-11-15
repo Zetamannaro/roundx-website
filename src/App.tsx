@@ -69,7 +69,7 @@ export default function App() {
           <h2>A <strong>micro venture</strong> fund born as a startup, investing in startups</h2>
         </section>
 
-        <PortfolioSection reduced={reduced} />
+        <PortfolioSection />
 
         <section className="contacts section" id="contacts" aria-labelledby="contacts-title">
           <h2 id="contacts-title">Contacts<span>.</span></h2>
