@@ -72,7 +72,7 @@ export default function App() {
         <PortfolioSection />
 
         <section className="contacts section" id="contacts" aria-labelledby="contacts-title">
-          <h2 id="contacts-title">Contacts<span>.</span></h2>
+          <h2 id="contacts-title">Contacts</h2>
           <div className="contact-rows">
             <p><strong>Office:</strong><span>via Monte Napoleone 21, Milano (Italy) - 20121</span></p>
             <p><strong>E-mail:</strong><a href="mailto:info@roundx.io">info@roundx.io</a></p>
@@ -81,7 +81,7 @@ export default function App() {
         </section>
       </main>
       <footer className="site-footer section"><img src="./roundx-logo.svg" alt="RoundX" width="112" height="36" /><span>© {new Date().getFullYear()} RoundX</span>
-        <label className="motion-preference"><input type="checkbox" checked={reduced} onChange={e => setReduced(e.target.checked)} /> Reduce motion</label>
+        <label className="motion-preference" title="Pause background animation and cursor effects"><input type="checkbox" checked={reduced} onChange={e => setReduced(e.target.checked)} /> Reduce motion</label>
       </footer>
     </>
   );

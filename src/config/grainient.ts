@@ -32,13 +32,13 @@ function interpolateColor(start: string, end: string, progress: number) {
   return `#${channels.join('')}`;
 }
 
-// Both palettes and the angle reach their exact endpoints at the document bottom.
+// Colors and flow follow scroll progress; the angle remains fixed at 55 degrees.
 export function grainientAtScroll(scrollY: number, scrollHeight: number, viewportHeight: number) {
   const range = scrollHeight - viewportHeight;
   const progress = range > 0 ? Math.min(1, Math.max(0, scrollY / range)) : 0;
   return {
     colors: grainientPreset.colors.map((color, index) => interpolateColor(color, grainientEndColors[index], progress)),
-    angle: 55 + (90 - 55) * progress,
+    angle: 55,
     flow: 0.8 + (2 - 0.8) * progress,
   };
 }

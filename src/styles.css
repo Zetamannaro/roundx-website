@@ -137,7 +137,7 @@ html{scroll-padding-top:135px}
 
 /* All companies stay in document flow. Filtering changes only the list items. */
 .portfolio-grid-container{width:100%;margin-top:20px;min-height:240px}
-.company-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0;align-items:stretch}
+.company-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:calc((100% - 80px) / 6 * 5 + 64px);gap:16px;list-style:none;margin:0 auto;padding:0;align-items:stretch}
 .company-grid>li{min-width:0;margin:0;padding:0;display:flex}
 .company-card{position:relative;display:flex;flex-direction:column;min-width:0;width:100%;min-height:222px;padding:16px;border:1px solid #00000030;border-radius:14px;color:#000;background:transparent}
 a.company-card:hover{border-color:#0009}
@@ -151,12 +151,15 @@ a.company-card:focus-visible{outline:2px solid #102952;outline-offset:4px}
 .company-card-industry{font-weight:500}
 .company-card-footer{display:flex;align-items:flex-end;min-height:25px;padding-top:9px;margin-top:auto}
 .company-card-external{position:absolute;right:10px;top:7px;font-size:14px;line-height:1;opacity:.5}
-.company-badge{display:inline-flex;align-items:center;gap:7px;border-radius:5px;padding:3px 7px;font-size:8px;line-height:1.5;font-weight:500;letter-spacing:.025em}
+.company-badge{display:inline-flex;align-items:center;gap:7px;border-radius:5px;padding:3px 7px;font-size:12px;line-height:1;font-weight:600;letter-spacing:.025em}
 .company-badge-exit{border:1px solid #9b7020;background:linear-gradient(110deg,#efcb76,#fff0bd,#e8b84e);color:#4e3303}
 .company-badge-lesson{border:1px dashed #655e58;background:transparent;color:#403b34}
-.company-card-exit{border-color:#a87c25;box-shadow:inset 0 0 0 1px #d7ac4b55}
-.company-card-lessons-learned{border-style:dashed;border-color:#786d6580}
-@media(max-width:1199px){.company-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.company-card-exit{background:#fff1bd99;border-color:#a87c25;box-shadow:inset 0 0 0 1px #d7ac4b55}
+.company-card-lessons-learned{background:#eceeefb3;border-style:dashed;border-color:#786d6580}
+@media(max-width:1199px){.company-grid{width:100%;grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:850px){.company-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.company-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.company-card{min-height:214px;padding:14px 12px}.company-card-logo{height:56px}.company-card h3{font-size:13px}.company-card-details p{font-size:9px}}
 @media(max-width:330px){.company-grid{grid-template-columns:1fr}}
+
+/* Portfolio now matches the existing Contacts typography. */
+#portfolio-title{font-family:inherit;font-size:clamp(48px,6vw,84px);font-weight:500;line-height:normal;letter-spacing:-.055em}

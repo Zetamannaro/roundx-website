@@ -3,6 +3,20 @@ export type PortfolioStatus = 'active' | 'exit' | 'lessons-learned';
 export type Startup = { id:string; name:string; macroSector:string; industry:string; status:PortfolioStatus; countries:string[]; country:string; code:string|null; image:string; website:string|null; darkLogoTile:boolean };
 const rows: [string,string,string,string,PortfolioStatus][] = [
   [
+    "anthropic",
+    "Anthropic",
+    "Artificial Intelligence",
+    "Foundation Models",
+    "active"
+  ],
+  [
+    "startup-geeks",
+    "Startup Geeks",
+    "Education",
+    "EdTech",
+    "active"
+  ],
+  [
     "up2you",
     "Up2You",
     "Climate & Sustainability",
@@ -21,6 +35,20 @@ const rows: [string,string,string,string,PortfolioStatus][] = [
     "Kampaay",
     "Enterprise Software",
     "B2B SaaS",
+    "active"
+  ],
+  [
+    "timeflow",
+    "TimeFlow",
+    "Enterprise Software",
+    "B2B SaaS",
+    "active"
+  ],
+  [
+    "bezel",
+    "Bezel",
+    "Consumer & Retail",
+    "E-commerce Tech",
     "active"
   ],
   [
@@ -87,20 +115,6 @@ const rows: [string,string,string,string,PortfolioStatus][] = [
     "lessons-learned"
   ],
   [
-    "timeflow",
-    "TimeFlow",
-    "Enterprise Software",
-    "B2B SaaS",
-    "active"
-  ],
-  [
-    "startup-geeks",
-    "Startup Geeks",
-    "Education",
-    "EdTech",
-    "active"
-  ],
-  [
     "gemateg",
     "GemaTEG",
     "Climate & Sustainability",
@@ -129,13 +143,6 @@ const rows: [string,string,string,string,PortfolioStatus][] = [
     "active"
   ],
   [
-    "bezel",
-    "Bezel",
-    "Consumer & Retail",
-    "E-commerce Tech",
-    "active"
-  ],
-  [
     "picterus",
     "Picterus",
     "Healthcare",
@@ -161,13 +168,6 @@ const rows: [string,string,string,string,PortfolioStatus][] = [
     "ClimeFi",
     "Climate & Sustainability",
     "ClimateTech",
-    "active"
-  ],
-  [
-    "anthropic",
-    "Anthropic",
-    "Artificial Intelligence",
-    "Foundation Models",
     "active"
   ]
 ];
