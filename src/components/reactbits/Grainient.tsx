@@ -525,7 +525,7 @@ const Grainient = ({
       trail.forEach(sample => {
         if (sample.done) sample.age += dt;
       });
-      if (s.interactive && pointer.inside && Math.hypot(vx, vy) > 0.02 && !reduce) {
+      if (s.interactive && pointer.inside && Math.hypot(vx, vy) > 0.02) {
         if (!head || head.done) {
           trail.unshift({ x: 0, y: 0, vx: 0, vy: 0, age: 0, grow: 0, done: false });
           if (trail.length > MAX_STIRS) trail.pop();
@@ -615,7 +615,7 @@ const Grainient = ({
     const onPointerDown = (event: PointerEvent) => {
       locate(event);
       const s = settingsRef.current;
-      if (!pointer.inside || !s.clickSwirl || reduce) return;
+      if (!pointer.inside || !s.clickSwirl) return;
       spins.unshift({
         x: (pointer.x - 0.5) * (view.width / view.height),
         y: pointer.y - 0.5,

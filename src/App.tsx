@@ -4,7 +4,6 @@ import { grainientAtScroll, grainientPreset } from './config/grainient';
 const Grainient = lazy(() => import('./components/reactbits/Grainient'));
 
 export default function App() {
-  const [reduced, setReduced] = useState(false);
   const [webgl, setWebgl] = useState<boolean | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [backgroundSettings, setBackgroundSettings] = useState(()=>grainientAtScroll(0, 0, 0));
@@ -43,20 +42,14 @@ export default function App() {
     return () => { cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener('scroll', syncScroll); window.removeEventListener('resize', syncScroll); };
   }, []);
   useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const sync = () => setReduced(query.matches);
-    sync(); query.addEventListener('change', sync);
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('webgl2');
     setWebgl(!!context); context?.getExtension('WEBGL_lose_context')?.loseContext();
-    return () => query.removeEventListener('change', sync);
   }, []);
   return (
     <>
       <div className="site-background" aria-hidden="true" style={{background:`linear-gradient(${backgroundSettings.angle}deg,${backgroundSettings.colors.join(',')})`}}><Suspense fallback={null}>
-        {webgl && <Grainient {...grainientPreset} {...backgroundSettings}
-          speed={reduced ? 0 : grainientPreset.speed} grainAnimated={!reduced}
-          interactive={!reduced} clickSwirl={!reduced} intro={!reduced} />}
+        {webgl && <Grainient {...grainientPreset} {...backgroundSettings} interactive clickSwirl />}
       </Suspense></div>
       <a href="#main" className="skip-link">Skip to content</a>
       <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}><div className="header-inner">
@@ -81,7 +74,6 @@ export default function App() {
         </section>
       </main>
       <footer className="site-footer section"><img src="./roundx-logo.svg" alt="RoundX" width="112" height="36" /><span>© {new Date().getFullYear()} RoundX</span>
-        <label className="motion-preference" title="Pause background animation and cursor effects"><input type="checkbox" checked={reduced} onChange={e => setReduced(e.target.checked)} /> Reduce motion</label>
       </footer>
     </>
   );

@@ -25,8 +25,8 @@ All landscape placeholders have been replaced in the rendered portfolio with com
 Grainient from the official free React Bits repository remains the fixed full-viewport background. Scroll interpolates the original white/beige/copper palette to the user-supplied white/blue/purple palette, with exact endpoints. There are no added white text panels or logo backplates.
 The angle is fixed at 55 degrees; scroll retains flow 0.8 to 2. The final flow and cool palette are reached at the document bottom, with clamping for overscroll and resize/layout updates. The CSS background fallback follows the same palette and angle.
 The original component registers window-level pointermove and pointerdown handlers, so interactive stirring and clickSwirl remain active over page sections. Its canvas does not intercept links or drag gestures.
-Reduce motion disables autonomous speed, animated grain, cursor effects and intro animation; scroll-linked settings remain deterministic.
-The portfolio is always static, independently of the reduced-motion preference. Reduce motion continues to control the Grainient background.
+Mouse stirring and click swirl remain enabled at all times. The footer motion checkbox is removed. OS reduced-motion preferences still limit autonomous animation; they no longer disable user-driven pointer effects. Scroll-linked settings remain deterministic.
+The portfolio is always static. EXIT and Lessons learned card fills are 70% opaque (30% transparent); logos and text retain full opacity.
 Active and EXIT cards use real anchors with noopener/noreferrer. All matches are present in document flow, with no hidden copies or focus-driven layout changes. Metadata includes name, every country, macro-sector and industry.
 Logos are contained rather than cropped. EXIT gets a pale yellow card, gold outline and larger badge; Lessons learned gets a pale gray card, subdued dashed outline and larger badge, while retaining each logo's original colors.
 The portfolio grid needs no WebGL; only Grainient uses WebGL2. If WebGL2 is unavailable, the dynamic CSS gradient stays visible.
@@ -38,4 +38,4 @@ GitHub Pages itself logs visitor IP addresses for security.
 Development noindex stays enabled. Review portfolio data, company legal information and privacy notice before production.
 No live-domain/DNS changes are included.
 
-Display order starts with Anthropic, Startup Geeks, Up2You, Zappyrent, Kampaay, TimeFlow and Bezel; the remaining relative order is preserved. The Contacts title has no final dot. Reduce motion pauses autonomous background animation and pointer effects, with a tooltip explaining it.
+Display order starts with Anthropic, Startup Geeks, Up2You, Zappyrent, Kampaay, TimeFlow and Bezel; the remaining relative order is preserved. The Contacts title has no final dot. The former Reduce motion footer checkbox is removed; pointer-driven background effects are always enabled.
